@@ -1,0 +1,117 @@
+:root {
+  --orange: #e15a29;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --border: #e3e5e8;
+  --text: #1f2328;
+  --muted: #5f6670;
+  --faint: #8b929a;
+  --ingredient: #c2410c;
+  --ingredient-bg: #fff1e8;
+  --cookware: #0369a1;
+  --cookware-bg: #e8f4fb;
+  --timer: #15803d;
+  --timer-bg: #e9f7ee;
+  --code-bg: #f8f9fa;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 1px 3px rgb(16 24 40 / 8%);
+  --radius: 12px;
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg: #0f1115;
+  --surface: #16191f;
+  --surface-2: #1d2128;
+  --border: #2a2f37;
+  --text: #e6e8eb;
+  --muted: #a3aab3;
+  --faint: #7b838d;
+  --ingredient: #fb923c;
+  --ingredient-bg: rgb(251 146 60 / 12%);
+  --cookware: #38bdf8;
+  --cookware-bg: rgb(56 189 248 / 12%);
+  --timer: #4ade80;
+  --timer-bg: rgb(74 222 128 / 12%);
+  --code-bg: #12151a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+  color-scheme: dark;
+}
+
+/* ---------- Workspace */
+main:has(> .workspace) {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.pane-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 46px; padding: 0 12px 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.pane-title { font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--muted); }
+.legend { display: flex; gap: 6px; font-size: 12px; }
+
+#editor { flex: 1; min-height: 200px; }
+
+/* Ace, restyled with our tokens (works with the bundled textmate theme) */
+.ace_editor { background: var(--surface) !important; color: var(--text) !important; line-height: 1.6 !important; }
+.ace_gutter { background: var(--surface) !important; color: var(--faint) !important; }
+.ace_gutter-active-line { background: transparent !important; }
+.ace_cursor { color: var(--orange) !important; }
+.ace_marker-layer .ace_selection { background: color-mix(in srgb, var(--orange) 22%, transparent) !important; }
+.ace_marker-layer .ace_bracket { display: none; }
+.ace_placeholder { color: var(--faint) !important; font-family: inherit !important; }
+.ace_ingredient { color: var(--ingredient); font-weight: 600; }
+.ace_cookware { color: var(--cookware); font-weight: 600; }
+.ace_timer { color: var(--timer); font-weight: 600; }
+.ace_editor .ace_comment { color: var(--faint); font-style: italic; }
+.ace_frontmatter { color: var(--muted); }
+.ace_frontmatter.ace_key { color: var(--text); font-weight: 600; }
+.ace_section { color: var(--orange); font-weight: 700; }
+.ace_note { color: var(--muted); font-style: italic; }
+
+.cheatsheet { border-top: 1px solid var(--border); padding: 10px 16px; font-size: 13px; }
+.cheatsheet summary { cursor: pointer; color: var(--muted); font-weight: 500; }
+.cheatsheet dl {
+  display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px;
+  margin: 12px 0;
+}
+.cheatsheet dt { font-family: "JetBrains Mono", monospace; color: var(--ingredient); }
+.cheatsheet dd { margin: 0; color: var(--muted); }
+.cheatsheet code { font-size: 12px; }
+
+.tok { border-radius: 6px; padding: 1px 6px; font-weight: 500; white-space: nowrap; }
+.tok-ingredient { background: var(--ingredient-bg); color: var(--ingredient); }
+.tok-cookware { background: var(--cookware-bg); color: var(--cookware); }
+.tok-timer { background: var(--timer-bg); color: var(--timer); }
+.tok-quantity { background: var(--surface-2); color: var(--text); }
+.tok .qty { opacity: 0.75; font-weight: 400; }
+.legend .tok { font-family: "JetBrains Mono", monospace; font-size: 11px; }
+.empty { color: var(--muted); }
+.crash { margin: 20px; padding: 16px 18px; border-radius: var(--radius); border: 1px solid #fca5a5; background: color-mix(in srgb, #dc2626 8%, var(--surface)); }
+.crash p { margin: 6px 0 10px; color: var(--muted); }
+.crash pre { margin: 0; font-size: 12px; color: var(--faint); white-space: pre-wrap; }
+
+@media (max-width: 768px) {
+    .ace_gutter {
+        display: none !important;
+    }
+}

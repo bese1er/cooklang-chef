@@ -18,10 +18,12 @@
         "dark": null,
         "system": null
     },
-    "openInEditor": {
+    "editor": {
         "error": null,
         "success": null,
-        "text": null
+        "text": null,
+        "save": null,
+        "back": null
     },
     "r": {
         "warnings": null,

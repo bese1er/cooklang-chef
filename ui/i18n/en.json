@@ -18,10 +18,12 @@
         "dark": "Dark",
         "system": "System"
     },
-    "openInEditor": {
-        "error": "Could not open editor",
-        "success": "Recipe opened",
-        "text": "Open in editor"
+    "editor": {
+        "error": "Unable to save file",
+        "success": "Recipe saved",
+        "text": "Open in editor",
+        "save": "Save",
+        "back": "Back"
     },
     "r": {
         "warnings": "Warnings",

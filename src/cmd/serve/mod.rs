@@ -22,9 +22,7 @@ use cooklang::CooklangParser;
 use minijinja::{context, Environment, Value};
 use rust_embed::RustEmbed;
 use std::{
-    collections::HashMap,
-    net::SocketAddr,
-    sync::{atomic::AtomicI32, Arc},
+    collections::HashMap, net::SocketAddr, sync::Arc, time::SystemTime, time::UNIX_EPOCH
 };
 use tokio::sync::broadcast;
 use tower::ServiceBuilder;
@@ -95,8 +93,8 @@ fn make_router(state: Arc<AppState>) -> Router {
         .route("/about", get(handlers::about))
         .route("/r/{*path}", get(handlers::recipe))
         .route("/updates", get(handlers::sse_updates))
-        .route("/open_editor/{*path}", get(handlers::open_editor))
-        .route("/convert_modal", post(handlers::convert_popover))
+        .route("/editor/{*path}", get(handlers::load_editor))
+        .route("/editor/{*path}", post(handlers::update_recipe))
         .nest_service(
             "/src",
             ServiceBuilder::new()
@@ -115,10 +113,9 @@ pub struct AppState {
     base_path: Utf8PathBuf,
     recipe_index: AsyncFsIndex,
     updates_stream: broadcast::Receiver<Update>,
+    updates_sender: broadcast::Sender<Update>,
     config: crate::config::Config,
-    disable_open_editor: bool,
-    editor_command: Option<Vec<String>>,
-    editor_count: AtomicI32,
+    disable_open_editor: bool
 }
 
 type S = Arc<AppState>;
@@ -138,7 +135,7 @@ fn build_state(ctx: Context, args: &ServeArgs) -> Result<S> {
     let complete_index = recipe_index
         .index_all()
         .context("failed to index the recipes")?;
-    let (recipe_index, updates) = AsyncFsIndex::new(complete_index, Arc::clone(&parser));
+    let (recipe_index, updates_sender, updates) = AsyncFsIndex::new(complete_index, Arc::clone(&parser));
 
     let locales = make_locale_store();
     let templates = make_template_env(&locales);
@@ -150,9 +147,8 @@ fn build_state(ctx: Context, args: &ServeArgs) -> Result<S> {
         base_path,
         recipe_index,
         updates_stream: updates,
+        updates_sender,
         config,
-        editor_command: chef_config.editor().ok(),
-        editor_count: 0.into(),
         disable_open_editor: args.disable_open_editor,
     }))
 }

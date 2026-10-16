@@ -1,3 +1,5 @@
+@import "./src/styles.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -197,7 +199,7 @@ Make a <div> a divider
 /* Buttons */
 
 .btn {
-  @apply rounded font-sans font-semibold transition-colors active:translate-y-[1px];
+  @apply rounded font-sans font-semibold transition-colors active:enabled:translate-y-[1px] disabled:bg-base-2 disabled:text-base-7;
 }
 
 .btn-icon {
@@ -205,7 +207,43 @@ Make a <div> a divider
 }
 
 .btn-primary {
-  @apply text-primary-11 hover:bg-primary-4 hover:text-primary-12;
+  @apply text-primary-11;
+}
+
+button.btn-primary {
+  @apply hover:enabled:bg-primary-4 hover:enabled:text-primary-12;
+}
+
+a.btn-primary {
+  @apply hover:bg-primary-4 hover:text-primary-12;
+}
+
+.btn-base {
+  @apply text-base-11;
+}
+
+button.btn-base {
+  @apply hover:enabled:bg-base-4 hover:enabled:text-base-12;
+}
+
+a.btn-base {
+  @apply hover:bg-base-4 hover:text-base-12;
+}
+
+.btn-warning {
+  @apply text-red-11;
+}
+
+button.btn-warning {
+  @apply hover:enabled:bg-red-4 hover:enabled:text-red-12;
+}
+
+a.btn-warning {
+  @apply hover:bg-red-4 hover:text-red-12;
+}
+
+.action {
+  @apply btn btn-primary grid place-items-center border-2 border-transparent size-9;
 }
 
 /* Youtube video embed */

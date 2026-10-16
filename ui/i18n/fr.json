@@ -18,10 +18,12 @@
         "dark": "Sombre",
         "system": "Système"
     },
-    "openInEditor": {
-        "error": "Impossible d'ouvrir l'éditeur",
-        "success": "Recette ouverte",
-        "text": "Ouvrir dans l'éditeur"
+    "editor": {
+        "error": "Impossible de sauvegarder le fichier",
+        "success": "Recette sauvegardée",
+        "text": "Ouvrir dans l'éditeur",
+        "save": "Sauvegarder",
+        "back": "Retour"
     },
     "r": {
         "warnings": "Avertissements",

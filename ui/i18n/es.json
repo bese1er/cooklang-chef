@@ -18,10 +18,12 @@
         "dark": "Oscuro",
         "system": "Sistema"
     },
-    "openInEditor": {
-        "error": "No se ha podido abrir el editor",
-        "success": "Receta abierta",
-        "text": "Abrir en editor"
+    "editor": {
+        "error": "No se pudo guardar el archivo",
+        "success": "Receta guardada",
+        "text": "Abrir en el editor",
+        "save": "Guardar",
+        "back": "Volver"
     },
     "r": {
         "warnings": "Avisos",
