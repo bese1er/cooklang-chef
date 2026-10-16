@@ -29,7 +29,12 @@
         "imageUp": null,
         "imageDown": null,
         "confirmDelete": null,
-        "delete": null
+        "delete": null,
+        "newDir": null,
+        "newRecipe": null,
+        "edit": null,
+        "rename": null,
+        "changeName": null
     },
     "r": {
         "warnings": null,

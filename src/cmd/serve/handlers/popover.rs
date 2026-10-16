@@ -84,3 +84,49 @@ pub async fn image_popover(
     let html = mj_ok!(tmpl.render(context! { t, triggered_by, is_new, sect, step, src_path }));
     Html(html).into_response()
 }
+
+pub async fn directory_popover(
+    UserLocale(t): UserLocale,
+    Path(path): Path<String>,
+    State(state): State<S>,
+    headers: HeaderMap,
+) -> Response {   
+    let triggered_by = match headers.get("HX-Trigger").map(|v| v.to_str().ok()) {
+        Some(id) => id,
+        None => return StatusCode::BAD_REQUEST.into_response(),
+    };
+    if let Err(err) = check_path(&path) {
+        return err.into_response()
+    }
+
+    let old_path = state.base_path.join(&path);
+
+    if !old_path.exists() || !old_path.is_dir() {
+        return StatusCode::BAD_REQUEST.into_response();
+    }    
+
+    let tmpl = mj_ok!(state.templates.get_template("components/it_popover.html"));
+    let html = mj_ok!(tmpl.render(context! { t, triggered_by, src_path => path, type=>"d", old_name=> old_path.file_name()}));
+    Html(html).into_response()
+}
+
+pub async fn recipe_popover(
+    UserLocale(t): UserLocale,
+    Path(path): Path<String>,
+    State(state): State<S>,
+    headers: HeaderMap,
+) -> Response {   
+    let triggered_by = match headers.get("HX-Trigger").map(|v| v.to_str().ok()) {
+        Some(id) => id,
+        None => return StatusCode::BAD_REQUEST.into_response(),
+    };
+    if let Err(err) = check_path(&path) {
+        return err.into_response()
+    }
+    let entry = ok_status!(state.recipe_index.get(&path).await, NOT_FOUND);
+    let src_path = clean_path(entry.path(), &state.base_path);
+
+    let tmpl = mj_ok!(state.templates.get_template("components/it_popover.html"));
+    let html = mj_ok!(tmpl.render(context! { t, triggered_by, src_path, type=>"r", old_name=> &entry.name()}));
+    Html(html).into_response()
+}

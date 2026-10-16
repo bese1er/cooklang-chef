@@ -94,6 +94,8 @@ pub async fn index(
         folders,
         path => Value::from_iter(path_parts),
         deleted => q.deleted,
+        show_open_editor_btn => !state.disable_open_editor,
+        src_path => clean_path(&path, &state.base_path)
     });
     let content = mj_ok!(res);
     Html(content).into_response()

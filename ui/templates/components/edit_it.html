@@ -1,0 +1,13 @@
+{% macro popover(href, icon) %}
+<button 
+  title='{{ t("editor.edit") }}'
+  hx-post="/modal{{ href }}"
+  hx-trigger="click[isPopoverClosed()]"
+  hx-target="body"
+  hx-swap="beforeend"
+  data-auto-id
+  class="action btn-overlay"
+>
+  <i class="{{ icon }}"></i>
+</button>
+{% endmacro %}

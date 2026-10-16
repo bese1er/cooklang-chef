@@ -19,8 +19,8 @@
         "system": "Système"
     },
     "editor": {
-        "error": "Impossible de sauvegarder le fichier",
-        "success": "Recette sauvegardée",
+        "error": "Impossible de sauvegarder",
+        "success": "Changement effectuée",
         "text": "Ouvrir dans l'éditeur",
         "save": "Sauvegarder",
         "back": "Retour",
@@ -29,13 +29,18 @@
         "imageUp": "Déplacer l'image vers le haut",
         "imageDown": "Déplacer l'image vers le bas",
         "confirmDelete": "Êtes-vous sûr de vouloir supprimer ?",
-        "delete": "Supprimer"
+        "delete": "Supprimer",
+        "newDir": "Donner un nom au nouveau répertoire",
+        "newRecipe": "Donner un nom à la nouvelle recette",
+        "edit": "Éditer",
+        "rename": "Renommer",
+        "changeName": "Modifier le nom"
     },
     "r": {
         "warnings": "Avertissements",
         "meta": {
             "servings": "Portions",
-            "author": "Autheur",
+            "author": "Auteur",
             "source": "Source",
             "totalTime": "Temps total",
             "prepTime": "Temps de préparation",

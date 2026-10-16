@@ -92,7 +92,7 @@ pub async fn upload_image(
 
                 let data = match field.bytes().await {
                     Ok(data) => data,
-                    Err(err) => {
+                    Err(_) => {
                         return (StatusCode::BAD_REQUEST, mj_ok!(err_html())).into_response();
                     }
                 };

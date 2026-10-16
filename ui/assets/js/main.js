@@ -412,6 +412,10 @@ function isPopoverClosed() {
   return document.querySelector("[data-popover]") == null;
 }
 
+function isModalClosed() {
+  return document.querySelector("dialog:modal") === null
+}
+
 htmx.onLoad((el) => {
   if (el.hasAttribute("data-popover")) {
     registerPopover(el);
@@ -421,7 +425,7 @@ htmx.onLoad((el) => {
 document.body.addEventListener("keypress", (ev) => {
   if (ev.key.toLowerCase() === "s") {
     const search = document.getElementById("search");
-    if (!search || document.activeElement === search) return;
+    if (!search || document.activeElement === search || !isPopoverClosed() || !isModalClosed()) return;
     ev.preventDefault();
     search.focus();
   }
