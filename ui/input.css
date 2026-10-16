@@ -532,3 +532,8 @@ a.btn-warning {
 span.popoveractive {
   @apply bg-base-3;
 }
+
+.step-done {
+  font-size: small;
+  opacity: 50%;
+}
