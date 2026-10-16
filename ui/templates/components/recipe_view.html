@@ -1,9 +1,10 @@
-{% from "atoms.html" import tag, qty_format, value_format %}
+{% from "atoms.html" import tag, qty_format, value_format, recipe_image %}
+{% import "components/edit_image.html" as edit_image %}
 
 <!-- Image(s) -->
 {% if main_image %}
-  <div class="mb-8 max-h-[70vh] w-full overflow-hidden rounded shadow-lg">
-    <img class="h-full w-full object-cover" src="{{ main_image }}" />
+<div class="mb-8 max-h-[70vh] img-emphasis w-full overflow-hidden rounded shadow-lg">
+  {{ recipe_image(main_image, timestamp()) }}
   </div>
 {% endif %}
 
@@ -19,6 +20,7 @@
 {% if show_open_editor_btn is true %}
   <!-- Open editor, only if authorised -->
   <div class="float-right flex flex-wrap gap-2">
+    {{ edit_image.popover(src_path) }}
     {% include "components/open_in_editor.html" %}
   </div>
 {% endif %}
@@ -364,11 +366,11 @@
   </div>
 
   {% if r.sections is not empty %}
-    <div class="float-right flex gap-2">
+    <div class="mt-6 float-right flex gap-2">
       <button
         id="igr-layout-line"
         type="button"
-        class="btn btn-primary mt-6 grid size-9 place-items-center border-2 border-transparent"
+        class="action"
       >
         <i class="i-lucide-wrap-text"></i>
         <span class="sr-only">{{ t("r.stepIngredientsView.compact") }}</span>
@@ -376,7 +378,7 @@
       <button
         id="igr-layout-list"
         type="button"
-        class="btn btn-primary mt-6 grid size-9 place-items-center border-2 border-transparent"
+        class="action"
       >
         <i class="i-lucide-layout-list"></i>
         <span class="sr-only">{{ t("r.stepIngredientsView.list") }}</span>
@@ -384,7 +386,7 @@
       <button
         id="igr-layout-hidden"
         type="button"
-        class="btn btn-primary mt-6 grid size-9 place-items-center border-2 border-transparent"
+        class="action"
       >
         <i class="i-lucide-eye-off"></i>
         <span class="sr-only">{{ t("r.stepIngredientsView.hidden") }}</span>
@@ -418,8 +420,7 @@
           <!-- Step -->
           {% set step_number = content.value.number %}
           {% set igr_extra = step_ingredients(content.value.items, r.ingredients) %}
-          <div class="my-6 flex">
-            <span class="me-2 mt-2 font-sans font-semibold text-primary-12">
+            <div class="relative my-6 flex">
               {{ step_number }}.
             </span>
             <div class="flex flex-grow flex-col-reverse gap-2 lg:flex-row">
@@ -553,13 +554,13 @@
               </div>
               {% set step_image = images|select_image(sect_index, step_number - 1) %}
               {% if step_image is not none %}
-                <div class="max-w-[40%] overflow-hidden rounded">
-                  <img
-                    src="{{ step_image.href }}"
-                    class="h-full w-full object-cover"
-                  />
+                <div class="img-emphasis max-w-[40%] overflow-hidden rounded">
+                  {{ recipe_image(step_image.href, timestamp()) }}
                 </div>
               {% endif %}
+                {% if show_open_editor_btn is true %}
+                  {{ edit_image.popover(src_path, sect_index, step_number - 1, "btn-overlay") }}
+                {% endif %}
             </div>
           </div>
         {% elif content.type == "text" %}
@@ -568,7 +569,29 @@
         {% endif %}
       {% endfor %}
     </div>
+    <div class="flex flex-row-reverse gap-2">
+    {% set step_out = sect.content | length %}
+    {% for step_image in detached_step_images(images, sect_index, step_out) %}
+      <div class="img-emphasis max-w-[20%] overflow-hidden rounded relative">
+        {{ recipe_image(step_image.href, timestamp()) }}
+        {% if show_open_editor_btn is true %}
+          {{ edit_image.popover(src_path, step_image.indexes.section, step_image.indexes.step, "btn-overlay") }}
+        {% endif %}
+      </div>
+    {% endfor %}
+    </div>
   {% endfor %}
+  <div class="flex flex-row-reverse gap-2">
+  {% set sect_out = r.sections | length %}
+  {% for sect_image in detached_images(images, sect_out) %}
+    <div class="img-emphasis max-w-[20%] overflow-hidden rounded relative">
+      {{ recipe_image(sect_image.href, timestamp()) }}
+      {% if show_open_editor_btn is true %}
+        {{ edit_image.popover(src_path, sect_image.indexes.section, sect_image.indexes.step, "btn-overlay") }}
+      {% endif %}
+    </div>
+  {% endfor %}
+  </div>
 </div>
 
 <script src="/js/recipe.js" defer></script>

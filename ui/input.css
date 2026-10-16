@@ -64,6 +64,10 @@
   }
 }
 
+.max-w-\[20\%\] {
+  max-width:20%
+}
+
 img.emoji {
   height: 1em;
   width: 1em;
@@ -244,6 +248,21 @@ a.btn-warning {
 
 .action {
   @apply btn btn-primary grid place-items-center border-2 border-transparent size-9;
+}
+
+.btn-overlay {
+  opacity: 75%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.img-emphasis img {
+  @apply transition-transform;
+}
+
+.img-emphasis:hover img {
+  @apply scale-[1.01];
 }
 
 /* Youtube video embed */

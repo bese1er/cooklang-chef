@@ -23,7 +23,13 @@
         "success": null,
         "text": null,
         "save": null,
-        "back": null
+        "back": null,
+        "imageBt": null,
+        "selectImage": null,
+        "imageUp": null,
+        "imageDown": null,
+        "confirmDelete": null,
+        "delete": null
     },
     "r": {
         "warnings": null,

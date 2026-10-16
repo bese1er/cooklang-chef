@@ -19,11 +19,17 @@
         "system": "System"
     },
     "editor": {
-        "error": "Unable to save file",
+        "error": "Unable to save the file",
         "success": "Recipe saved",
         "text": "Open in editor",
         "save": "Save",
-        "back": "Back"
+        "back": "Back",
+        "image": "Image",
+        "selectImage": "Select an image",
+        "imageUp": "Move image up",
+        "imageDown": "Move image down",
+        "confirmDelete": "Are you sure you wish to delete it?",
+        "delete": "Delete"
     },
     "r": {
         "warnings": "Warnings",

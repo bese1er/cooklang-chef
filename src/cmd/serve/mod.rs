@@ -9,11 +9,11 @@ use self::{
 use crate::Context;
 use anyhow::{bail, Context as _, Result};
 use axum::{
-    extract::Request,
+    extract::{Request, DefaultBodyLimit},
     http::{header::CONTENT_TYPE, HeaderMap, HeaderValue, StatusCode},
     middleware::{self, Next},
     response::Response,
-    routing::{get, post},
+    routing::{get, post, delete},
     Router,
 };
 use camino::Utf8PathBuf;
@@ -95,6 +95,11 @@ fn make_router(state: Arc<AppState>) -> Router {
         .route("/updates", get(handlers::sse_updates))
         .route("/editor/{*path}", get(handlers::load_editor))
         .route("/editor/{*path}", post(handlers::update_recipe))
+        .route("/modal/convert", post(handlers::convert_popover))
+        .route("/modal/image/{*path}", post(handlers::image_popover))
+        .route("/image/{*path}", post(handlers::upload_image))
+        .route("/image/{*path}", delete(handlers::delete_image))
+        .route("/move/image/{*path}", post(handlers::move_image))
         .nest_service(
             "/src",
             ServiceBuilder::new()
@@ -104,6 +109,7 @@ fn make_router(state: Arc<AppState>) -> Router {
         )
         .fallback(handlers::static_file)
         .with_state(state)
+        .layer(DefaultBodyLimit::max(10 * 1024 * 1024))
 }
 
 pub struct AppState {
@@ -262,12 +268,52 @@ fn make_template_env(locales: &LocaleStore) -> Environment<'static> {
         },
     );
 
+    env.add_function("detached_step_images", |v: Value, section: u32, step: u32| {
+        let mut items = Vec::new();
+
+        for it in v.try_iter()? {
+            let indexes = it.get_attr("indexes")?;
+            if indexes.is_none() {
+                continue;
+            }
+            let i_sect: u32 = indexes.get_attr("section")?.try_into()?;
+            let i_step: u32 = indexes.get_attr("step")?.try_into()?;
+            if i_sect == section && i_step >= step {
+                items.push(it);
+            }
+        }
+        Ok(Value::from(items))
+    });
+
+    env.add_function("detached_images", |v: Value, section: u32| {
+        let mut items = Vec::new();
+
+        for it in v.try_iter()? {
+            let indexes = it.get_attr("indexes")?;
+            if indexes.is_none() {
+                continue;
+            }
+            let i_sect: u32 = indexes.get_attr("section")?.try_into()?;
+            if i_sect >= section {
+                items.push(it);
+            }
+        }
+        Ok(Value::from(items))
+    });
+
     env.add_filter("zeroless_float", |v: f64| {
         if v.fract() == 0.0 {
             Value::from(v as i128)
         } else {
             Value::from(v)
         }
+    });
+
+    env.add_function("timestamp", || {
+        SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Who live in the past ?")
+        .as_secs()
     });
 
     env

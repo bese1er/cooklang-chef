@@ -562,6 +562,22 @@ impl RecipeEntry {
     pub fn images(&self) -> &[Image] {
         self.images.get_or_init(|| recipe_images(&self.path))
     }
+
+    pub fn image(&self, section: Option<u16>, step: Option<u16>) -> Option<&Image> {
+        if section.is_none() && step.is_none() {
+            return self.images()
+                .iter()
+                .find(|img| img.indexes.is_none());
+        }
+
+        self.images()
+            .iter()
+            .find(|img| {
+                img.indexes.as_ref().is_some_and(|idx| {
+                    Some(idx.section) == section && Some(idx.step) == step
+                })
+            })
+    }
 }
 
 #[derive(Debug, thiserror::Error)]

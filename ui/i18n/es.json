@@ -19,11 +19,17 @@
         "system": "Sistema"
     },
     "editor": {
-        "error": "No se pudo guardar el archivo",
+        "error": "No se ha podido guardar el archivo",
         "success": "Receta guardada",
         "text": "Abrir en el editor",
         "save": "Guardar",
-        "back": "Volver"
+        "back": "Volver",
+        "image": "Imagen",
+        "selectImage": "Seleccionar una imagen",
+        "imageUp": "Mover la imagen hacia arriba",
+        "imageDown": "Mover la imagen hacia abajo",
+        "confirmDelete": "¿Estás seguro de que deseas eliminarlo?",
+        "delete": "Eliminar"
     },
     "r": {
         "warnings": "Avisos",

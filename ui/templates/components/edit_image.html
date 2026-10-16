@@ -1,0 +1,13 @@
+{% macro popover(src_path, sect, step, image_class) %}
+<button 
+  title='{{ t("editor.image") }}'
+  hx-post="/modal/image/{{ src_path }}{% if sect is defined %}?sect={{ sect }}&step={{ step }}{% endif %}"
+  hx-trigger="click[isPopoverClosed()]"
+  hx-target="body"
+  hx-swap="beforeend"
+  data-auto-id
+  class="action {{ image_class }}"
+>
+  <i class="i-lucide-image"></i>
+</button>
+{% endmacro %}

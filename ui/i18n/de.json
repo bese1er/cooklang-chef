@@ -23,7 +23,13 @@
         "success": "Rezept gespeichert",
         "text": "Im Editor öffnen",
         "save": "Speichern",
-        "back": "Zurück"
+        "back": "Zurück",
+        "image": "Bild",
+        "selectImage": "Bild auswählen",
+        "imageUp": "Bild nach oben verschieben",
+        "imageDown": "Bild nach unten verschieben",
+        "confirmDelete": "Möchtest du es wirklich löschen?",
+        "delete": "Löschen"
     },
     "r": {
         "warnings": "Warnungen",

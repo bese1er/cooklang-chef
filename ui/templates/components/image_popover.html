@@ -1,0 +1,72 @@
+<div
+  data-popover="{{ triggered_by }}"
+  data-image-popover
+  hidden
+  class="absolute left-0 top-0 z-10 min-w-72 rounded-xl border border-base-7 bg-base-2 p-3 shadow"
+>
+  <form
+    method="post"
+    enctype="multipart/form-data"
+    hx-post="/image/{{ src_path }}{% if sect is not none %}?sect={{ sect }}&step={{ step }}{% endif %}"
+    hx-encoding="multipart/form-data"
+    hx-swap="none"
+    class="grid gap-3"
+  >
+    <label class="grid gap-2">    
+      <div class="flex items-end w-full">
+        <span class="text-sm font-semibold">
+          {{ t("editor.selectImage") }}
+        </span>        
+        <div class="flex gap-2 ml-auto {% if is_new %}hidden{% endif %}">
+          <button 
+            title='{{ t("editor.imageUp") }}'
+            hx-post="/move/image/{{ src_path }}?to_up=true{% if sect is not none %}&sect={{ sect }}&step={{ step }}{% endif %}"
+            hx-swap="none"
+            id="move-image-up"
+            class="action"
+            data-close-popover            
+          >
+            <i class="i-lucide-move-up"></i>
+          </button>
+          <button 
+            title='{{ t("editor.imageDown") }}'
+            hx-post="/move/image/{{ src_path }}?to_up=false{% if sect is not none %}&sect={{ sect }}&step={{ step }}{% endif %}"
+            id="move-image-down"
+            class="action"
+            data-close-popover            
+          >
+            <i class="i-lucide-move-down"></i>
+          </button>
+        </div>        
+      </div>
+
+      <input
+        type="file"
+        name="image"
+        accept="image/*"
+      >
+    </label>
+
+    <div class="flex justify-between mt-2">
+      <button
+        id="delete-image"
+        type="button"
+        class="btn btn-warning btn-icon"
+        hx-delete="/image/{{ src_path }}{% if sect is not none %}?sect={{ sect }}&step={{ step }}{% endif %}"
+        hx-swap="none"
+        hx-confirm='{{ t("editor.confirmDelete") }}'
+        {% if is_new %}disabled{% endif %}        
+      >
+        {{ t("editor.delete") }}
+      </button>
+      <button
+        id="save-image"
+        type="submit"
+        class="btn btn-primary btn-icon"
+        data-close-popover
+      >
+        {{ t("editor.save") }}
+      </button>
+    </div>
+  </form>
+</div>

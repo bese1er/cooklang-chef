@@ -9,7 +9,9 @@ use super::async_index::RecipeData;
 use super::AppState;
 
 pub mod about;
-pub mod convert_popover;
+pub mod popover;
+pub mod image;
+pub mod delete;
 pub mod index;
 pub mod editor;
 pub mod recipe;
@@ -18,7 +20,11 @@ pub mod sse_updates;
 pub mod static_file;
 
 pub use about::about;
-pub use convert_popover::convert_popover;
+pub use popover::convert_popover;
+pub use popover::image_popover;
+pub use image::upload_image;
+pub use delete::delete_image;
+pub use image::move_image;
 pub use index::index;
 pub use editor::load_editor;
 pub use editor::update_recipe;

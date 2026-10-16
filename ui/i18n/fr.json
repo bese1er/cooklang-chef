@@ -23,7 +23,13 @@
         "success": "Recette sauvegardée",
         "text": "Ouvrir dans l'éditeur",
         "save": "Sauvegarder",
-        "back": "Retour"
+        "back": "Retour",
+        "image": "Image",
+        "selectImage": "Sélectionner une image",
+        "imageUp": "Déplacer l'image vers le haut",
+        "imageDown": "Déplacer l'image vers le bas",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ?",
+        "delete": "Supprimer"
     },
     "r": {
         "warnings": "Avertissements",
