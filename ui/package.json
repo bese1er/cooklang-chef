@@ -1,13 +1,19 @@
 {
   "private": true,
   "scripts": {
-    "dev": "npx tailwindcss -i input.css -o assets/styles.css --watch",
-    "build": "npx tailwindcss -i input.css -o assets/styles.css --minify"
+    "dev:css": "tailwindcss -i input.css -o assets/styles.css --watch",
+    "dev:js": "tsc --watch",
+    "build": "npm run build:js && npm run build:css",
+    "build:css": "npx tailwindcss -i input.css -o assets/styles.css --minify",
+    "build:js": "tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "@cooklang/cooklang": "*"
   },
   "devDependencies": {
-    "@egoist/tailwindcss-icons": "^1.7.1",
+    "@egoist/tailwindcss-icons": "^1.9.2",
     "@floating-ui/dom": "^1.5.3",
-    "@iconify-json/lucide": "^1.1.147",
+    "@iconify-json/lucide": "^1.2.144",
     "@radix-ui/colors": "^3.0.0",
     "@twemoji/api": "^15.0.3",
     "htmx.org": "^1.9.10",
@@ -16,6 +22,9 @@
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.0",
     "twemoji": "^14.0.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vite-plugin-wasm": "^3.6.0",
     "windy-radix-palette": "^2.0.0-beta.7"
   },
   "frontendMappings": {
@@ -36,5 +45,6 @@
       "Floating-UI (dom)": "@floating-ui/dom/LICENSE",
       "Floating-UI (core)": "@floating-ui/core/LICENSE"
     }
-  }
+  },
+  "type": "module"
 }

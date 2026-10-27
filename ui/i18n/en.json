@@ -18,10 +18,23 @@
         "dark": "Dark",
         "system": "System"
     },
-    "openInEditor": {
-        "error": "Could not open editor",
-        "success": "Recipe opened",
-        "text": "Open in editor"
+    "editor": {
+        "error": "Unable to save",
+        "success": "Change completed",
+        "text": "Open in editor",
+        "save": "Save",
+        "back": "Back",
+        "image": "Image",
+        "selectImage": "Select an image",
+        "imageUp": "Move image up",
+        "imageDown": "Move image down",
+        "confirmDelete": "Are you sure you wish to delete it?",
+        "delete": "Delete",
+        "newDir": "Enter a name for the new folder",
+        "newRecipe": "Enter a name for the new recipe",
+        "edit": "Edit",
+        "rename": "Rename",
+        "changeName": "Change the name"
     },
     "r": {
         "warnings": "Warnings",

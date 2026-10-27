@@ -1,0 +1,31 @@
+<dialog 
+  id="recipe-modal"
+  class="absolute left-0 top-0 z-10 min-w-72 rounded-xl border border-base-7 bg-base-2 p-3 shadow"
+>
+  <form
+    method="post"
+    hx-post="/r/{{ src_path }}"
+    hx-swap="none"
+    class="grid gap-3"
+  >
+    <label class="grid gap-2">    
+      <span class="text-sm font-semibold">
+        {{ t("editor.newRecipe") }}
+      </span>
+
+      <input
+        name="name"
+        required
+        autocomplete="off"
+      >
+    </label>
+
+    <button
+      id="close-recipe-modal"
+      type="submit"
+      class="ml-auto btn btn-primary btn-icon"
+    >
+      {{ t("editor.save") }}
+    </button>
+  </form>
+</dialog>

@@ -18,5 +18,4 @@ RUN adduser -u ${PUID} -G chef_user -s /bin/sh -D chef_user
 USER ${PUID}:${PGID}
 
 EXPOSE 9080
-WORKDIR "/recipes"
-ENTRYPOINT ["/app/chef", "serve", "--host", "--port=9080", "--disable-open-editor"]
+ENTRYPOINT ["/app/chef", "serve", "--host", "--port=9080", "--path=/recipes"]

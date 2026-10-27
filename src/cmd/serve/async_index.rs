@@ -115,7 +115,7 @@ pub enum Update {
 }
 
 impl AsyncFsIndex {
-    pub fn new(index: FsIndex, parser: Arc<CooklangParser>) -> (Self, broadcast::Receiver<Update>) {
+    pub fn new(index: FsIndex, parser: Arc<CooklangParser>) -> (Self, broadcast::Sender<Update>, broadcast::Receiver<Update>) {
         let (in_updt_tx, mut in_updt_rx) = mpsc::channel::<Update>(1);
         let (out_updates_tx, out_updates_rx) = broadcast::channel::<Update>(1);
         watch_changes_task(in_updt_tx, index.base_path());
@@ -123,6 +123,7 @@ impl AsyncFsIndex {
         let indexes = Arc::new(RwLock::new(Indexes::new(index, parser)));
 
         let indexes2 = Arc::clone(&indexes);
+        let out_updates_tx2 = out_updates_tx.clone();
         tokio::spawn(async move {
             let indexes = indexes2;
             while let Some(update) = in_updt_rx.recv().await {
@@ -153,11 +154,11 @@ impl AsyncFsIndex {
                     }
                 }
                 // resend update after index is updated
-                let _ = out_updates_tx.send(update);
+                let _ = out_updates_tx2.send(update);
             }
         });
 
-        (Self { indexes }, out_updates_rx)
+        (Self { indexes }, out_updates_tx, out_updates_rx)
     }
 
     pub fn resolve_blocking(

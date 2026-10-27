@@ -18,10 +18,23 @@
         "dark": "Dunkel",
         "system": "System"
     },
-    "openInEditor": {
-        "error": "Konnte Editor nicht öffnen",
-        "success": "Rezept geöffnet",
-        "text": "In Editor öffnen"
+    "editor": {
+        "error": "Speichern fehlgeschlagen",
+        "success": "Änderung durchgeführt",
+        "text": "Im Editor öffnen",
+        "save": "Speichern",
+        "back": "Zurück",
+        "image": "Bild",
+        "selectImage": "Bild auswählen",
+        "imageUp": "Bild nach oben verschieben",
+        "imageDown": "Bild nach unten verschieben",
+        "confirmDelete": "Möchtest du es wirklich löschen?",
+        "delete": "Löschen",
+        "newDir": "Geben Sie einen Namen für den neuen Ordner ein",
+        "newRecipe": "Geben Sie einen Namen für das neue Rezept ein",
+        "edit": "Bearbeiten",
+        "rename": "Umbenennen",
+        "changeName": "Namen ändern"
     },
     "r": {
         "warnings": "Warnungen",

@@ -162,7 +162,7 @@ pub async fn recipe(
                 images,
                 main_image,
 
-                show_open_editor_btn => addr.ip().is_loopback() && !state.disable_open_editor,
+                show_open_editor_btn => !state.disable_open_editor,
                 igr_layout => get_cookie(&headers, "igr_layout").unwrap_or("line"),
 
                 report_html,
@@ -177,6 +177,7 @@ pub async fn recipe(
 
             let content = mj_ok!(tmpl.render(context! {
                 name => entry.name(),
+                show_open_editor_btn => !state.disable_open_editor,
                 report_html,
                 severity => "error",
                 ..ctx

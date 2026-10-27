@@ -18,10 +18,23 @@
         "dark": "Oscuro",
         "system": "Sistema"
     },
-    "openInEditor": {
-        "error": "No se ha podido abrir el editor",
-        "success": "Receta abierta",
-        "text": "Abrir en editor"
+    "editor": {
+        "error": "No se ha podido guardar",
+        "success": "Cambio realizado",
+        "text": "Abrir en el editor",
+        "save": "Guardar",
+        "back": "Volver",
+        "image": "Imagen",
+        "selectImage": "Seleccionar una imagen",
+        "imageUp": "Mover la imagen hacia arriba",
+        "imageDown": "Mover la imagen hacia abajo",
+        "confirmDelete": "¿Estás seguro de que deseas eliminarlo?",
+        "delete": "Eliminar",
+        "newDir": "Introduce un nombre para la nueva carpeta",
+        "newRecipe": "Introduce un nombre para la nueva receta",
+        "edit": "Editar",
+        "rename": "Renombrar",
+        "changeName": "Cambiar el nombre"
     },
     "r": {
         "warnings": "Avisos",

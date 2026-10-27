@@ -9,11 +9,11 @@ use self::{
 use crate::Context;
 use anyhow::{bail, Context as _, Result};
 use axum::{
-    extract::Request,
+    extract::{Request, DefaultBodyLimit},
     http::{header::CONTENT_TYPE, HeaderMap, HeaderValue, StatusCode},
     middleware::{self, Next},
     response::Response,
-    routing::{get, post},
+    routing::{get, post, delete},
     Router,
 };
 use camino::Utf8PathBuf;
@@ -22,9 +22,7 @@ use cooklang::CooklangParser;
 use minijinja::{context, Environment, Value};
 use rust_embed::RustEmbed;
 use std::{
-    collections::HashMap,
-    net::SocketAddr,
-    sync::{atomic::AtomicI32, Arc},
+    collections::HashMap, net::SocketAddr, sync::Arc, time::SystemTime, time::UNIX_EPOCH
 };
 use tokio::sync::broadcast;
 use tower::ServiceBuilder;
@@ -90,13 +88,28 @@ pub async fn run(ctx: Context, args: ServeArgs) -> Result<()> {
 fn make_router(state: Arc<AppState>) -> Router {
     Router::new()
         .route("/", get(handlers::index))
+        .route("/d/", post(handlers::create_directory))
         .route("/d/{*path}", get(handlers::index))
+        .route("/d/{*path}", post(handlers::create_directory))
+        .route("/d/{*path}", delete(handlers::delete_directory))
         .route("/search", get(handlers::search))
         .route("/about", get(handlers::about))
+        .route("/r/", post(handlers::create_recipe))
         .route("/r/{*path}", get(handlers::recipe))
+        .route("/r/{*path}", post(handlers::create_recipe))
+        .route("/r/{*path}", delete(handlers::delete_recipe))
         .route("/updates", get(handlers::sse_updates))
-        .route("/open_editor/{*path}", get(handlers::open_editor))
-        .route("/convert_modal", post(handlers::convert_popover))
+        .route("/editor/{*path}", get(handlers::load_editor))
+        .route("/editor/{*path}", post(handlers::update_recipe))
+        .route("/modal/convert", post(handlers::convert_popover))
+        .route("/modal/image/{*path}", post(handlers::image_popover))
+        .route("/modal/r/{*path}", post(handlers::recipe_popover))
+        .route("/modal/d/{*path}", post(handlers::directory_popover))
+        .route("/image/{*path}", post(handlers::upload_image))
+        .route("/image/{*path}", delete(handlers::delete_image))
+        .route("/move/image/{*path}", post(handlers::move_image))
+        .route("/rename/d/{*path}", post(handlers::rename_directory))
+        .route("/rename/r/{*path}", post(handlers::rename_recipe))
         .nest_service(
             "/src",
             ServiceBuilder::new()
@@ -106,6 +119,7 @@ fn make_router(state: Arc<AppState>) -> Router {
         )
         .fallback(handlers::static_file)
         .with_state(state)
+        .layer(DefaultBodyLimit::max(10 * 1024 * 1024))
 }
 
 pub struct AppState {
@@ -115,10 +129,9 @@ pub struct AppState {
     base_path: Utf8PathBuf,
     recipe_index: AsyncFsIndex,
     updates_stream: broadcast::Receiver<Update>,
+    updates_sender: broadcast::Sender<Update>,
     config: crate::config::Config,
-    disable_open_editor: bool,
-    editor_command: Option<Vec<String>>,
-    editor_count: AtomicI32,
+    disable_open_editor: bool
 }
 
 type S = Arc<AppState>;
@@ -138,7 +151,7 @@ fn build_state(ctx: Context, args: &ServeArgs) -> Result<S> {
     let complete_index = recipe_index
         .index_all()
         .context("failed to index the recipes")?;
-    let (recipe_index, updates) = AsyncFsIndex::new(complete_index, Arc::clone(&parser));
+    let (recipe_index, updates_sender, updates) = AsyncFsIndex::new(complete_index, Arc::clone(&parser));
 
     let locales = make_locale_store();
     let templates = make_template_env(&locales);
@@ -150,9 +163,8 @@ fn build_state(ctx: Context, args: &ServeArgs) -> Result<S> {
         base_path,
         recipe_index,
         updates_stream: updates,
+        updates_sender,
         config,
-        editor_command: chef_config.editor().ok(),
-        editor_count: 0.into(),
         disable_open_editor: args.disable_open_editor,
     }))
 }
@@ -266,12 +278,52 @@ fn make_template_env(locales: &LocaleStore) -> Environment<'static> {
         },
     );
 
+    env.add_function("detached_step_images", |v: Value, section: u32, step: u32| {
+        let mut items = Vec::new();
+
+        for it in v.try_iter()? {
+            let indexes = it.get_attr("indexes")?;
+            if indexes.is_none() {
+                continue;
+            }
+            let i_sect: u32 = indexes.get_attr("section")?.try_into()?;
+            let i_step: u32 = indexes.get_attr("step")?.try_into()?;
+            if i_sect == section && i_step >= step {
+                items.push(it);
+            }
+        }
+        Ok(Value::from(items))
+    });
+
+    env.add_function("detached_images", |v: Value, section: u32| {
+        let mut items = Vec::new();
+
+        for it in v.try_iter()? {
+            let indexes = it.get_attr("indexes")?;
+            if indexes.is_none() {
+                continue;
+            }
+            let i_sect: u32 = indexes.get_attr("section")?.try_into()?;
+            if i_sect >= section {
+                items.push(it);
+            }
+        }
+        Ok(Value::from(items))
+    });
+
     env.add_filter("zeroless_float", |v: f64| {
         if v.fract() == 0.0 {
             Value::from(v as i128)
         } else {
             Value::from(v)
         }
+    });
+
+    env.add_function("timestamp", || {
+        SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Who live in the past ?")
+        .as_secs()
     });
 
     env

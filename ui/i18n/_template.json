@@ -18,10 +18,23 @@
         "dark": null,
         "system": null
     },
-    "openInEditor": {
+    "editor": {
         "error": null,
         "success": null,
-        "text": null
+        "text": null,
+        "save": null,
+        "back": null,
+        "imageBt": null,
+        "selectImage": null,
+        "imageUp": null,
+        "imageDown": null,
+        "confirmDelete": null,
+        "delete": null,
+        "newDir": null,
+        "newRecipe": null,
+        "edit": null,
+        "rename": null,
+        "changeName": null
     },
     "r": {
         "warnings": null,
