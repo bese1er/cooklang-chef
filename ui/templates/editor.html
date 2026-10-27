@@ -12,25 +12,27 @@
       <div class="pane-head">
         <span class="pane-title">{{ path }}</span>
         <span class="legend">
-          <span class="tok tok-ingredient">@ingredient</span>
-          <span class="tok tok-cookware">#cookware</span>
-          <span class="tok tok-timer">~timer</span>
+          <span id="bt-ingredient" class="tok tok-ingredient">@ingredient</span>
+          <span id="bt-cookware" class="tok tok-cookware">#cookware</span>
+          <span id="bt-timer" class="tok tok-timer">~timer</span>
         </span>
       </div>
       <div id="editor">{{ recipe }}</div>
       <details class="cheatsheet">
         <summary>Syntax cheat sheet</summary>
         <dl>
-          <dt>@salt</dt>
-          <dd>ingredient (one word)</dd>
+          <dt>@salt or @&salt</dt>
+          <dd>ingredient (one word) or ref</dd>
           <dt>@plain flour{125%g}</dt>
           <dd>ingredient with amount and unit</dd>
-          <dt>#pot</dt>
+          <dt>#pot or #@pot</dt>
           <dd>cookware · <code>#frying pan{}</code> for multi-word</dd>
           <dt>~{25%minutes}</dt>
           <dd>timer · <code>~rest{10%minutes}</code> to name it</dd>
-          <dt>-- note</dt>
+          <dt>-- comment</dt>
           <dd>comment to end of line · <code>[- … -]</code> block</dd>
+          <dt>> note</dt>
+          <dd>note section</dd>
           <dt>== Dough ==</dt>
           <dd>section heading</dd>
           <dt>---</dt>

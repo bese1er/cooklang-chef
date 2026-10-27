@@ -98,7 +98,7 @@ main:has(> .workspace) {
 .cheatsheet dd { margin: 0; color: var(--muted); }
 .cheatsheet code { font-size: 12px; }
 
-.tok { border-radius: 6px; padding: 1px 6px; font-weight: 500; white-space: nowrap; }
+.tok { border-radius: 6px; padding: 1px 6px; font-weight: 500; white-space: nowrap; cursor: pointer;}
 .tok-ingredient { background: var(--ingredient-bg); color: var(--ingredient); }
 .tok-cookware { background: var(--cookware-bg); color: var(--cookware); }
 .tok-timer { background: var(--timer-bg); color: var(--timer); }

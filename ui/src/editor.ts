@@ -56,4 +56,14 @@ document.body.addEventListener("htmx:beforeSwap", (event: Event) => {
     }
 })
 
+document.getElementById("bt-ingredient").addEventListener("click", () => {
+  editor.session.insert(editor.getCursorPosition(), "@{}")
+});
+document.getElementById("bt-cookware").addEventListener("click", () => {
+  editor.session.insert(editor.getCursorPosition(), "#{}")
+});
+document.getElementById("bt-timer").addEventListener("click", () => {
+  editor.session.insert(editor.getCursorPosition(), "~{}")
+});
+
 checkEditor();
